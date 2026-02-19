@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Untukmu 💖</title>
+
+<style>
+body{
+    margin:0;
+    overflow:hidden;
+    font-family: 'Segoe UI', sans-serif;
+    background: radial-gradient(circle at top, #14001f, #000);
+    color:white;
+    text-align:center;
+}
+
+.container{
+    position:relative;
+    z-index:2;
+    margin-top:20vh;
+}
+
+h2{
+    font-weight:300;
+    animation:fadeIn 1.5s ease;
+}
+
+button{
+    padding:10px 20px;
+    border:none;
+    border-radius:30px;
+    background:linear-gradient(45deg,#ff0066,#ff4da6);
+    color:white;
+    margin:10px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:scale(1.1);
+    box-shadow:0 0 20px #ff4da6;
+}
+
+input{
+    padding:8px;
+    border-radius:10px;
+    border:none;
+    text-align:center;
+}
+
+.hidden{display:none;}
+
+.failed{
+    color:red;
+    font-weight:bold;
+    animation:glitch 0.4s infinite;
+}
+
+@keyframes fadeIn{
+    from{opacity:0;transform:translateY(20px);}
+    to{opacity:1;transform:translateY(0);}
+}
+
+@keyframes glitch{
+    0%{text-shadow:2px 0 red;}
+    50%{text-shadow:-2px 0 blue;}
+    100%{text-shadow:2px 0 red;}
+}
+
+/* bunga jatuh */
+.flower{
+    position:absolute;
+    top:-20px;
+    font-size:20px;
+    animation:fall linear infinite;
+}
+
+@keyframes fall{
+    to{transform:translateY(110vh);}
+}
+
+/* heartbeat */
+.heartbeat{
+    animation:beat 1.5s infinite;
+}
+
+@keyframes beat{
+    0%{transform:scale(1);}
+    25%{transform:scale(1.05);}
+    50%{transform:scale(1);}
+    75%{transform:scale(1.05);}
+    100%{transform:scale(1);}
+}
+
+video{
+    width:90%;
+    border-radius:20px;
+    margin-top:20px;
+    box-shadow:0 0 30px #ff4da6;
+}
+</style>
+</head>
+<body>
+
+<audio id="bgm" loop>
+<source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container">
+
+<div id="page1">
+<h2 class="heartbeat">Apakah Kamu bersedia mengikuti tantangan ini?</h2>
+<div id="btn1" class="hidden">
+<button onclick="yes1()">Ya 💖</button>
+<button id="noBtn" onclick="moveNo()" ontouchstart="moveNo()">Tidak 😏</button>
+</div>
+</div>
+
+<div id="page2" class="hidden">
+<h2>Nomor berapa kamar kost ku?</h2>
+<input id="kode" maxlength="2">
+<br>
+<button onclick="checkKode()">Submit</button>
+<p id="resultKode"></p>
+</div>
+
+<div id="page3" class="hidden">
+<h2>Dimana lokasi pertama ngDate?</h2>
+<input id="jawaban">
+<br>
+<button onclick="checkJawaban()">Submit</button>
+<p id="resultJawaban"></p>
+</div>
+
+<div id="page4" class="hidden">
+<h2>Untukmu 💌</h2>
+<video id="video" controls playsinline preload="auto">
+<source src="video.mp4" type="video/mp4">
+</video>
+
+<div id="afterVideo" class="hidden">
+<br>
+<a href="https://wa.me/6281384940398?text=Yes,%20I%20do">
+<button>Yes, I Do 💚</button>
+</a>
+<button onclick="replay()">Putar Ulang 🎬</button>
+<button onclick="restart()">Restart 🔁</button>
+</div>
+</div>
+
+</div>
+
+<script>
+
+// Delay tombol awal
+window.onload=function(){
+setTimeout(()=>{document.getElementById("btn1").classList.remove("hidden")},1000);
+createFlowers();
+}
+
+// Bunga jatuh
+function createFlowers(){
+for(let i=0;i<20;i++){
+let flower=document.createElement("div");
+flower.className="flower";
+flower.innerHTML="🌸";
+flower.style.left=Math.random()*100+"vw";
+flower.style.animationDuration=(5+Math.random()*5)+"s";
+document.body.appendChild(flower);
+}
+}
+
+// Tombol tidak kabur
+function moveNo(){
+let btn=document.getElementById("noBtn");
+btn.style.position="fixed";
+let maxX = window.innerWidth - btn.offsetWidth;
+let maxY = window.innerHeight - btn.offsetHeight;
+btn.style.left = Math.random()*maxX + "px";
+btn.style.top = Math.random()*maxY + "px";
+}
+
+// Play music pertama kali
+function yes1(){
+let music=document.getElementById("bgm");
+music.volume=1;
+music.play().catch(()=>{});
+hideAll();
+show("page2");
+}
+
+// Fade out music
+function fadeOutMusic(music){
+let fade=setInterval(()=>{
+if(music.volume>0.1){
+music.volume-=0.1;
+}else{
+clearInterval(fade);
+music.pause();
+music.volume=1;
+}
+},100);
+}
+
+// Fade in music
+function fadeInMusic(music){
+music.volume=0;
+music.play().catch(()=>{});
+let fade=setInterval(()=>{
+if(music.volume<1){
+music.volume+=0.1;
+}else{
+clearInterval(fade);
+}
+},100);
+}
+
+function checkKode(){
+if(document.getElementById("kode").value==="04"){
+hideAll();
+show("page3");
+confetti();
+}else{
+document.getElementById("resultKode").innerHTML=
+`<span class="failed">FAILED!!!</span><br>
+<button onclick="restart()">Restart</button>`;
+}
+}
+
+function checkJawaban(){
+if(document.getElementById("jawaban").value.toUpperCase()==="ROYAL"){
+hideAll();
+show("page4");
+
+let v=document.getElementById("video");
+let music=document.getElementById("bgm");
+
+// Hentikan backsound dengan fade
+fadeOutMusic(music);
+
+v.pause();
+v.currentTime=0;
+v.load();
+
+setTimeout(()=>{
+v.play().catch(()=>{});
+},300);
+
+// Saat video selesai → backsound fade in lagi
+v.onended=function(){
+document.getElementById("afterVideo").classList.remove("hidden");
+fadeInMusic(music);
+};
+
+}else{
+document.getElementById("resultJawaban").innerHTML=
+`<span class="failed">FAILED!!!</span><br>
+<button onclick="restart()">Restart</button>`;
+}
+}
+
+// Confetti
+function confetti(){
+for(let i=0;i<30;i++){
+let c=document.createElement("div");
+c.innerHTML="🎉";
+c.style.position="absolute";
+c.style.left=Math.random()*100+"vw";
+c.style.top=Math.random()*100+"vh";
+c.style.fontSize="20px";
+document.body.appendChild(c);
+setTimeout(()=>c.remove(),1000);
+}
+}
+
+function replay(){
+let v=document.getElementById("video");
+v.currentTime=0;
+v.play();
+}
+
+function restart(){
+location.reload();
+}
+
+function hideAll(){
+["page1","page2","page3","page4"].forEach(id=>{
+document.getElementById(id).classList.add("hidden");
+});
+}
+
+function show(id){
+document.getElementById(id).classList.remove("hidden");
+}
+</script>
+
+</body>
+</html>
