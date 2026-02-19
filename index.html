@@ -93,9 +93,21 @@ input{
 
 video{
     width:90%;
+    max-height:60vh; /* FIX agar tombol tidak terdorong terlalu bawah */
     border-radius:20px;
     margin-top:20px;
     box-shadow:0 0 30px #ff4da6;
+}
+
+/* FIX posisi tombol setelah video */
+#page4{
+    margin-top:5vh;
+}
+
+#afterVideo{
+    margin-top:20px;
+    position:relative;
+    z-index:3;
 }
 </style>
 </head>
@@ -154,6 +166,14 @@ video{
 window.onload=function(){
 setTimeout(()=>{document.getElementById("btn1").classList.remove("hidden")},1000);
 createFlowers();
+
+document.getElementById("kode").addEventListener("keypress",function(e){
+if(e.key==="Enter"){checkKode();}
+});
+
+document.getElementById("jawaban").addEventListener("keypress",function(e){
+if(e.key==="Enter"){checkJawaban();}
+});
 }
 
 function createFlowers(){
@@ -209,9 +229,9 @@ clearInterval(fade);
 }
 
 function checkKode(){
-let input = document.getElementById("kode").value.trim().toLowerCase();
+let input=document.getElementById("kode").value.trim().toLowerCase();
 
-if(input === "rizky purwa setia"){
+if(input==="rizky purwa setia"){
 hideAll();
 show("page3");
 confetti();
@@ -223,9 +243,9 @@ document.getElementById("resultKode").innerHTML=
 }
 
 function checkJawaban(){
-let jawaban = document.getElementById("jawaban").value.trim().toUpperCase();
+let jawaban=document.getElementById("jawaban").value.trim().toUpperCase();
 
-if(jawaban === "ROYAL"){
+if(jawaban==="ROYAL"){
 hideAll();
 show("page4");
 
