@@ -68,7 +68,6 @@ input{
     100%{text-shadow:2px 0 red;}
 }
 
-/* bunga jatuh */
 .flower{
     position:absolute;
     top:-20px;
@@ -80,7 +79,6 @@ input{
     to{transform:translateY(110vh);}
 }
 
-/* heartbeat */
 .heartbeat{
     animation:beat 1.5s infinite;
 }
@@ -119,7 +117,7 @@ video{
 
 <div id="page2" class="hidden">
 <h2>Siapa nama lengkap ku?</h2>
-<input id="kode" maxlength="17">
+<input id="kode">
 <br>
 <button onclick="checkKode()">Submit</button>
 <p id="resultKode"></p>
@@ -153,13 +151,11 @@ video{
 
 <script>
 
-// Delay tombol awal
 window.onload=function(){
 setTimeout(()=>{document.getElementById("btn1").classList.remove("hidden")},1000);
 createFlowers();
 }
 
-// Bunga jatuh
 function createFlowers(){
 for(let i=0;i<20;i++){
 let flower=document.createElement("div");
@@ -171,7 +167,6 @@ document.body.appendChild(flower);
 }
 }
 
-// Tombol tidak kabur
 function moveNo(){
 let btn=document.getElementById("noBtn");
 btn.style.position="fixed";
@@ -181,7 +176,6 @@ btn.style.left = Math.random()*maxX + "px";
 btn.style.top = Math.random()*maxY + "px";
 }
 
-// Play music pertama kali
 function yes1(){
 let music=document.getElementById("bgm");
 music.volume=0.3;
@@ -190,26 +184,24 @@ hideAll();
 show("page2");
 }
 
-// Fade out music
 function fadeOutMusic(music){
-let fade=setInterval(()=>{i
-if(music.volume>0.1){
-music.volume-=0.1;
+let fade=setInterval(()=>{
+if(music.volume>0.05){
+music.volume-=0.05;
 }else{
 clearInterval(fade);
 music.pause();
-music.volume=1;
+music.volume=0.3;
 }
 },100);
 }
 
-// Fade in music
 function fadeInMusic(music){
 music.volume=0;
 music.play().catch(()=>{});
 let fade=setInterval(()=>{
 if(music.volume<0.3){
-music.volume+=0.1;
+music.volume+=0.05;
 }else{
 clearInterval(fade);
 }
@@ -217,7 +209,9 @@ clearInterval(fade);
 }
 
 function checkKode(){
-if(document.getElementById("kode").value==="Rizky Purwa Setia"){
+let input = document.getElementById("kode").value.trim().toLowerCase();
+
+if(input === "rizky purwa setia"){
 hideAll();
 show("page3");
 confetti();
@@ -229,25 +223,20 @@ document.getElementById("resultKode").innerHTML=
 }
 
 function checkJawaban(){
-if(document.getElementById("jawaban").value.toUpperCase()==="ROYAL"){
+let jawaban = document.getElementById("jawaban").value.trim().toUpperCase();
+
+if(jawaban === "ROYAL"){
 hideAll();
 show("page4");
 
 let v=document.getElementById("video");
 let music=document.getElementById("bgm");
 
-// Hentikan backsound dengan fade
 fadeOutMusic(music);
 
-v.pause();
 v.currentTime=0;
-v.load();
-
-setTimeout(()=>{
 v.play().catch(()=>{});
-},300);
 
-// Saat video selesai → backsound fade in lagi
 v.onended=function(){
 document.getElementById("afterVideo").classList.remove("hidden");
 fadeInMusic(music);
@@ -260,7 +249,6 @@ document.getElementById("resultJawaban").innerHTML=
 }
 }
 
-// Confetti
 function confetti(){
 for(let i=0;i<30;i++){
 let c=document.createElement("div");
@@ -276,8 +264,17 @@ setTimeout(()=>c.remove(),1000);
 
 function replay(){
 let v=document.getElementById("video");
+let music=document.getElementById("bgm");
+
+fadeOutMusic(music);
+
 v.currentTime=0;
 v.play();
+
+v.onended=function(){
+document.getElementById("afterVideo").classList.remove("hidden");
+fadeInMusic(music);
+};
 }
 
 function restart(){
