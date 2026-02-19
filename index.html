@@ -169,6 +169,7 @@ flower.style.left=Math.random()*100+"vw";
 flower.style.animationDuration=(5+Math.random()*5)+"s";
 document.body.appendChild(flower);
 }
+    let music=document.getElementById("bgm");
 }
 
 // Tombol tidak kabur
@@ -182,8 +183,8 @@ btn.style.top = Math.random()*maxY + "px";
 }
 
 // Play music pertama kali
-function(){
-let music=document.getElementById("bgm");
+function yes1(){
+
 music.volume=0.5;
 music.play().catch(()=>{});
 hideAll();
