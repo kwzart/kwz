@@ -184,10 +184,10 @@ btn.style.top = Math.random()*maxY + "px";
 // Play music pertama kali
 function yes1(){
 let music=document.getElementById("bgm");
-music.volume=1;
+music.volume=0.5;
 music.play().catch(()=>{});
 hideAll();
-show("page2");
+show("page1");
 }
 
 // Fade out music
@@ -198,7 +198,7 @@ music.volume-=0.1;
 }else{
 clearInterval(fade);
 music.pause();
-music.volume=1;
+music.volume=0.5;
 }
 },100);
 }
@@ -208,7 +208,7 @@ function fadeInMusic(music){
 music.volume=0;
 music.play().catch(()=>{});
 let fade=setInterval(()=>{
-if(music.volume<1){
+if(music.volume<0.5){
 music.volume+=0.1;
 }else{
 clearInterval(fade);
